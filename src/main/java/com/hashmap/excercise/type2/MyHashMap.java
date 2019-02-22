@@ -10,7 +10,7 @@ public class MyHashMap<K,V> {
     private Set<Mapping<K,V>> entrySet;
     private List<V> values;
     private int size;
-    private ArrayList<Mapping>[] myHashMap;
+    private ArrayList<Mapping<K,V>>[] myHashMap;
 
     public MyHashMap(){
         myHashMap = new ArrayList[capacity];
@@ -27,7 +27,7 @@ public class MyHashMap<K,V> {
 
     private void addToMyHashMap(int index, Mapping<K,V> mapping) {
         if (myHashMap[index] == null) {
-            myHashMap[index] = new ArrayList<Mapping>();
+            myHashMap[index] = new ArrayList<Mapping<K, V>>();
             myHashMap[index].add(mapping);
             size++;
         }
@@ -36,7 +36,7 @@ public class MyHashMap<K,V> {
         addKeyToKeySet(mapping.getKey());
     }
 
-    private void addToList(ArrayList<Mapping> list, Mapping<K,V> mapping) {
+    private void addToList(ArrayList<Mapping<K, V>> list, Mapping<K,V> mapping) {
         if(equalKeys(list.get(0), mapping)){
             list.get(0).setValue(mapping.getValue());
             return;
@@ -68,13 +68,13 @@ public class MyHashMap<K,V> {
         else if (myHashMap[index].size()==1)
             return (V) myHashMap[index].get(0).getValue();
         else
-            return findValue(key, myHashMap[index]);
+            return (V) findValue(key, myHashMap[index]);
     }
 
-    private V findValue(K key, ArrayList<Mapping> list) {
-        for (Mapping current : list){
+    private V findValue(K key, ArrayList<Mapping<K, V>> list) {
+        for (Mapping<K,V> current : list){
             if(current.getKey().equals(key)) {
-                return (V)current.getValue();
+                return current.getValue();
             }
         }
         return null;
